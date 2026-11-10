@@ -1,0 +1,29 @@
+server:
+  port: 8101
+
+spring:
+  application:
+    name: leapoj-backend-gateway
+  cloud:
+    gateway:
+      # 路由配置示例（后续接入 nacos 后把 uri 换成 lb://服务名）
+      routes:
+        - id: leapoj-backend-user-service
+          uri: lb://leapoj-backend-user-service
+          predicates:
+            - Path=/api/user/**
+        - id: leapoj-backend-question-service
+          uri: lb://leapoj-backend-question-service
+          predicates:
+            - Path=/api/question/**
+        - id: leapoj-backend-judge-service
+          uri: lb://leapoj-backend-judge-service
+          predicates:
+            - Path=/api/judge/**
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+
+  main:
+    web-application-type: reactive
